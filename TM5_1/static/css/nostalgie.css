@@ -1,0 +1,194 @@
+/*-----------------------------------*\
+ * #TV SEREIS
+\*-----------------------------------*/
+
+/* Styles pour la superposition d'image sombre */
+.tv-series {
+  position: relative;
+  overflow: hidden;
+  padding-top: 150px;
+  padding-bottom: 150px;
+}
+
+.tv-series::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/Moroccan_design2.jpg");
+  background-size: cover;
+  background-blend-mode: multiply;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+/* Styles pour le contenu de la section */
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Reste de vos styles pour la section */
+.tv-series {
+  font-weight: 100;
+  overflow-y: auto;
+}
+
+.tv-series .section-title {
+  margin-bottom: 50px;
+}
+
+/**
+ * MOVIE CARD
+ */
+
+/* Set a fixed height for the .card-banner container */
+.movies-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  ); /* Responsive grid with a minimum column width of 300px */
+  gap: 30px; /* Adjust the gap between movie cards */
+}
+
+.movie-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-card .card-banner {
+  position: relative;
+  background: var(--gunmetal-1);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: var(--transition-1);
+}
+
+.movie-card .card-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transition: var(--transition-1);
+}
+
+.movie-card .card-banner:hover {
+  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.5);
+}
+
+.movie-card .card-banner:hover::after {
+  background: hsla(0, 0%, 100%, 0.05);
+}
+
+.movie-card .card-banner img {
+  width: 100%;
+  object-fit: cover; /* Make sure the image scales properly within the container */
+}
+
+.movie-card .title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /* Adjust the gap between movie title and year */
+  margin-bottom: 10px;
+}
+
+.movie-card .card-title {
+  color: var(--white);
+  font-size: var(--fs-7);
+  transition: var(--transition-1);
+}
+
+.movie-card .card-title:hover {
+  color: var(--citrine);
+}
+
+.movie-card .title-wrapper time {
+  color: var(--citrine);
+  font-size: var(--fs-9);
+  font-weight: var(--fw-500);
+}
+
+.movie-card .card-meta {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+
+.movie-card .badge {
+  color: var(--citrine);
+}
+
+.movie-card .duration {
+  margin-left: auto;
+}
+
+.movie-card .duration,
+.movie-card .rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--gainsboro);
+  font-size: var(--fs-11);
+  font-weight: var(--fw-500);
+}
+
+.movie-card .duration ion-icon,
+.movie-card .rating ion-icon {
+  font-size: 13px;
+  --ionicon-stroke-width: 50px;
+  color: var(--citrine);
+}
+
+.service-text,
+.service-card .card-text {
+  color: var(--gray-x);
+  font-size: var(--fs-9);
+  font-weight: var(--fw-500);
+  line-height: 1.8;
+}
+@media (max-width: 550px) {
+  .movie-card {
+    padding: 20px;
+  }
+}
+@media (min-width: 550px) {
+  /* MOVIE CARD */
+
+  .movies-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 60px 30px;
+  }
+}
+
+.service-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.service-card .card-icon {
+  margin-bottom: 0;
+}
+
+.service-card .card-content {
+  width: calc(100% - 115px);
+}
+@media (min-width: 992px) {
+  /* MOVIE CARD */
+
+  .movies-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1200px) {
+  /* MOVIE CARD */
+
+  .movies-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

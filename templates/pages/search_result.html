@@ -1,0 +1,130 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<center>
+  <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+  <!-- 
+        - #UPCOMING
+      -->
+
+  <section class="upcoming" id="programme">
+    <div class="container">
+      <div class="flex-wrapper" style="margin-top: 60px">
+        <div class="title-wrapper">
+          <p class="section-subtitle">Chercher par date</p>
+
+          <h2 class="h2 section-title">programme du mois</h2>
+        </div>
+
+        <ul class="filter-list">
+          <li>
+            <button class="filter-btn actual-btn" data-filter-btn="all">
+              Tout
+            </button>
+          </li>
+          {% for concert_type in concert_types %}
+          <li>
+            <button
+              class="filter-btn"
+              data-filter-btn="{{ concert_type.name }}"
+            >
+              {{ concert_type.name }}
+            </button>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const filterBtns = document.querySelectorAll("[data-filter-btn]");
+          const concertsList = document.querySelector(".movies-list");
+          const concertItems = concertsList.querySelectorAll("li");
+
+          filterBtns.forEach((button) => {
+            button.addEventListener("click", () => {
+              const filterValue = button.getAttribute("data-filter-btn");
+              filterConcerts(filterValue);
+            });
+          });
+
+          function filterConcerts(filterValue) {
+            concertItems.forEach((concert) => {
+              const concertType = concert.getAttribute("data-concert-type");
+
+              if (filterValue === "all" || concertType === filterValue) {
+                concert.style.animation = "fadeInOut 0.5s"; // Ajoutez cette ligne
+                concert.style.display = "block";
+              } else {
+                concert.style.display = "none";
+              }
+            });
+          }
+        });
+      </script>
+      <style>
+        @keyframes fadeInOut {
+          0% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translateY(-5px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      </style>
+
+      <ul class="movies-list">
+        {% for event in concert %}
+        <li
+          class="concert-type-{{ event.concert_type.name }}"
+          data-concert-type="{{ event.concert_type.name }}"
+        >
+          <div class="movie-card">
+            <a href="{% url 'concert_detail' concert_id=event.id %}">
+              <figure class="card-banner">
+                <img
+                  src="{{event.normal_image.url}}"
+                  alt="{{ event.title }} poster"
+                />
+              </figure>
+            </a>
+
+            <div class="title-wrapper">
+              <a href="./movie-details.html">
+                <h3 class="card-title">{{event.title}}</h3>
+              </a>
+
+              <time style="width: 115.9667px" datetime="{{ event.date }}"
+                >{{ event.date|date }}</time
+              >
+            </div>
+
+            <div class="card-meta">
+              <div class="duration">
+                <ion-icon name="time-outline"></ion-icon>
+
+                <time datetime="{{ event.start_time }}"
+                  >{{ event.start_time|time:"H:i" }}</time
+                >
+                <time datetime="{{ concert.end_time }}"
+                  >{{ event.end_time|time:"H:i" }}</time
+                >
+              </div>
+
+              <div class="rating">
+                <ion-icon name="star"></ion-icon>
+
+                <data>8.5</data>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+</center>
+{% endblock %}

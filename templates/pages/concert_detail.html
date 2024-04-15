@@ -1,0 +1,249 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}" />
+
+<section
+  class="movie-detail"
+  style="background: url('{{ concert.normal_image.url }}') no-repeat;background-size: cover;position: relative;z-index: 1"
+>
+  <div
+    class="dark-overlay"
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.686);
+      z-index: -1;
+    "
+  ></div>
+  <div class="container">
+    <figure class="movie-detail-banner">
+      <img
+        src="{{ concert.png_image.url }}"
+        alt="Free guy movie poster"
+        style="height: auto"
+      />
+    </figure>
+
+    <div class="movie-detail-content">
+      <p class="detail-subtitle">Nouveau Spectacle</p>
+
+      <h1 class="h1 detail-title">{{ concert.title }}</h1>
+
+      <div class="meta-wrapper">
+        <div class="badge-wrapper">
+          <div class="badge badge-fill">{{ concert.concert_type }}</div>
+
+          <div class="badge badge-outline">{{ concert.space }}</div>
+        </div>
+
+        <div class="date-time">
+          <div>
+            <ion-icon name="calendar-outline"></ion-icon>
+
+            <time datetime="2021">{{ concert.date }}</time>
+          </div>
+
+          <div>
+            <ion-icon name="time-outline"></ion-icon>
+
+            <time datetime="PT115M">{{ concert.start_time }} </time>
+          </div>
+        </div>
+      </div>
+
+      <p class="storyline">{{ concert.description }}</p>
+
+      <a href="{{ concert.ticket_link }}" class="download-btn">
+        <span>Réserver</span>
+
+        <ion-icon name="download-outline"></ion-icon>
+      </a>
+    </div>
+  </div>
+</section>
+<!-- 
+        - #gallery
+      -->
+<section class="gellery-section">
+  <p class="section-subtitle" style="margin-top: 50px">Découvrire</p>
+  <h2 class="h2 section-title">Galerie Média de l'Événement</h2>
+  <div class="container">
+    {% for media in concert_media %}
+    <div class="card">
+      {% if media.image %}
+      <img src="{{ media.image.url }}" alt="Concert Image" />
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="video-container">
+    {% for media in concert_media %}{% if media.video_url %}
+    <div class="video-card">
+      <iframe
+        width="800"
+        height="450"
+        src="{{ media.video_url }}"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    </div>
+    {% endif %}{% endfor %}
+  </div>
+</section>
+
+<!-- 
+        - #TV SERIES
+      -->
+
+<section class="tv-series" id="actualites" style="padding: 0">
+  <div class="container" style="margin-top: 50px">
+    <p class="section-subtitle">Découvrire</p>
+    <h2 class="h2 section-title">Les participants de concert</h2>
+
+    <ul class="movies-list">
+      {% for participant in concert.participants.all %}
+      <li>
+        <div class="movie-card">
+          <a href="#">
+            <figure class="card-banner">
+              <img
+                style="height: 400px"
+                src="{{ participant.image.url }}"
+                alt="{{ participant.first_name }} {{ participant.last_name }}"
+              />
+
+              <figcaption class="overlay-text">
+                <a href="#">
+                  <h3 class="card-title">
+                    {{ participant.first_name }} {{ participant.last_name }}
+                  </h3>
+                </a>
+
+                <p>{{ participant.description }}</p>
+              </figcaption>
+            </figure>
+          </a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+<style>
+  .movie-card {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+  }
+
+  .card-banner {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .overlay-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.718);
+    color: white;
+    padding: 10px;
+    opacity: 0;
+    transform: translateY(100%); /* Initially hide text below the image */
+    transition: opacity 0.6s ease, transform 0.6s ease; /* Transition for opacity and position */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    font-family: Arial, sans-serif; /* Change to your preferred font */
+    font-size: 14px; /* Adjust as needed */
+    line-height: 1.4;
+  }
+  .overlay-text .card-title {
+    margin: 0 0 5px; /* Add some space between title and description */
+    font-size: 20px; /* Adjust as needed */
+    color: var(--citrine);
+  }
+
+  .overlay-text p {
+    text-align: justify;
+  }
+  .movie-card:hover .overlay-text {
+    opacity: 1; /* Show overlay text on hover */
+    transform: translateY(0);
+  }
+</style>
+
+<!-- 
+        - #TOP RATED
+      -->
+
+<section class="upcoming">
+  <div class="container">
+    <div class="flex-wrapper">
+      <div class="title-wrapper">
+        <p class="section-subtitle">Agenda exceptionnel</p>
+
+        <h2 class="h2 section-title">Autres événements</h2>
+      </div>
+    </div>
+
+    <ul class="movies-list has-scrollbar">
+      {% for event in consert_all %}
+      <li>
+        <div class="movie-card">
+          <a href="{% url 'concert_detail' concert_id=event.id %}">
+            <figure class="card-banner">
+              <img
+                src="{{event.normal_image.url}}"
+                alt="{{ event.title }} poster"
+              />
+            </figure>
+          </a>
+
+          <div class="title-wrapper">
+            <a href="{% url 'concert_detail' concert_id=event.id %}">
+              <h3 class="card-title">{{ event.title }}</h3>
+            </a>
+
+            <time datetime="{{ event.date }}">{{ event.date|date:"Y" }}</time>
+          </div>
+
+          <div class="card-meta">
+            <div class="duration">
+              <ion-icon name="time-outline"></ion-icon>
+
+              <time datetime="{{ event.start_time }}"
+                >{{ event.start_time|time:"H:i" }}</time
+              >
+              <time datetime="{{ event.end_time }}"
+                >{{ event.end_time|time:"H:i" }}</time
+              >
+            </div>
+
+            <div class="rating">
+              <ion-icon name="star"></ion-icon>
+
+              <data>8.5</data>
+            </div>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+<!-- 
+    - custom css link
+  -->
+
+<!-- 
+    - custom js link
+  -->
+<script src="{% static 'js/index.js' %}"></script>
+{% endblock %}

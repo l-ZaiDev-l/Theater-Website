@@ -1,0 +1,117 @@
+{% load static %}
+<!-- 
+    - #HEADER
+  -->
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+<!-- <link rel="stylesheet" href="{% static 'css/index.css' %}" /> -->
+<header class="header" data-header>
+  <div class="container" style="margin-bottom: 0">
+    <div class="overlay" data-overlay></div>
+
+    <a href="{% url 'index'%}" class="logo">
+      <img
+        src="{% static 'images/logo.png' %}"
+        style="width: 169px"
+        alt="Filmlane logo"
+      />
+    </a>
+
+    <div class="header-actions">
+      <!-- <button class="search-btn">
+        <ion-icon name="search-outline"></ion-icon>
+      </button> -->
+      <div class="container_search">
+        <form action="{% url 'search_result' %}" method="post">
+          {% csrf_token %}
+          <div class="search-box">
+            <input type="text" name="q" placeholder="Chercher . . ." />
+            <span></span>
+          </div>
+          <button type="submit" style="display: none"></button>
+        </form>
+      </div>
+    </div>
+
+    <button class="menu-open-btn" data-menu-open-btn>
+      <ion-icon name="reorder-two"></ion-icon>
+    </button>
+
+    <nav class="navbar" data-navbar>
+      <div class="navbar-top">
+        <a href="#" class="logo">
+          <img
+            src="{% static 'images/logo.png' %}"
+            style="width: 169px"
+            alt="Filmlane logo"
+          />
+        </a>
+
+        <button class="menu-close-btn" data-menu-close-btn>
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+
+      <ul class="navbar-list">
+        <li>
+          <a href="{% url 'index'%}" class="navbar-link">Home</a>
+        </li>
+
+        <li>
+          <a href="{% url 'index' %}#programme" class="navbar-link"
+            >Programme</a
+          >
+        </li>
+
+        <li>
+          <a href="{% url 'calendrier'%}" class="navbar-link">Agenda</a>
+        </li>
+
+        <li>
+          <a href="{% url 'index' %}#actualites" class="navbar-link"
+            >Actualités</a
+          >
+        </li>
+
+        <li>
+          <a href="{% url 'nostalgie'%}" class="navbar-link">Nostalgie</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-social-list">
+        <li>
+          <a
+            href="https://www.instagram.com/theatre_mohammedv/"
+            class="social-link"
+          >
+            <ion-icon name="logo-instagram"></ion-icon>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://www.facebook.com/tnmvofficielle" class="social-link">
+            <ion-icon name="logo-facebook"></ion-icon>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://twitter.com/TheatreMohamedV" class="social-link">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="https://www.youtube.com/watch?v=PaFaLamfoR4&ab_channel=MincultureMaroc"
+            class="social-link"
+          >
+            <ion-icon name="logo-youtube"></ion-icon>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!-- 
+    - js link
+  -->
+<script src="{% static 'js/navbar.js' %}"></script>

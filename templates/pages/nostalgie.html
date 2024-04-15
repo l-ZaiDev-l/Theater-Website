@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<section class="tv-series" id="actualites">
+  <div class="container">
+    <p class="section-subtitle">Suivre</p>
+
+    <h2 class="h2 section-title">Nostalgie</h2>
+
+    <ul class="movies-list">
+      {% for nostalgie in nostalgies %}
+
+      <li>
+        <div class="movie-card">
+          <a href="{% url 'nostalgie_detail' nostalgie_id=nostalgie.id %}">
+            <figure class="card-banner">
+              <img
+                src="{{nostalgie.normal_image.url}}"
+                style="height: 450px; width: 100%"
+                alt="{{nostalgie.title}}"
+              />
+            </figure>
+          </a>
+
+          <div
+            class="title-wrapper"
+            style="margin-top: 10px; padding-left: 8px; padding-right: 8px"
+          >
+            <time datetime="{{ nostalgie.date|date:'Y' }}"
+              >{{ nostalgie.date|date:'Y' }}</time
+            >
+            <a href="./movie-details.html">
+              <h3 class="card-title">{{nostalgie.title}}</h3>
+            </a>
+          </div>
+
+          <div class="card-meta">
+            <div class="rating">
+              <ion-icon name="star"></ion-icon>
+
+              <data>8.6</data>
+            </div>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+<link rel="stylesheet" href="{% static 'css/nostalgie.css' %}" />
+{% endblock %}

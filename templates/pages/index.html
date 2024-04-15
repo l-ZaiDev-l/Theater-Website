@@ -1,0 +1,510 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filmlane - Best movie collections</title>
+
+    <!-- 
+    - favicon
+  -->
+    <link
+      rel="icon"
+      href="{% static 'images/favicon.ico' %}"
+      sizes="any"
+      type="image/svg+xml"
+    />
+
+    <!-- 
+    - custom css js link
+  -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/hero.css' %}" />
+
+    <!-- 
+    - google font link
+  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body id="top">
+    <main>
+      <article>
+        <!-- 
+        - #HERO /***************************************/
+      -->
+
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css"
+          integrity="sha256-DBYdrj7BxKM3slMeqBVWX2otx7x4eqoHRJCsSDJ0Nxw="
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"
+        ></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+          integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw="
+          crossorigin="anonymous"
+        ></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"
+          integrity="sha256-4sETKhh3aSyi6NRiA+qunPaTawqSMDQca/xLWu27Hg4="
+          crossorigin="anonymous"
+        ></script>
+        <section class="hero">
+          <div class="containerx">
+            <div class="marvel-container spiderman">
+              <div class="row">
+                <div class="col-md-5 pr-md-0">
+                  <div class="img-container">
+                    {% for event in closest_concerts %}
+
+                    <div class="img-wrapper">
+                      <div class="background"></div>
+                      <img src="{{event.png_image.url}}" alt="" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="col-md-7">
+                  <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                      {% for event in closest_concerts %}
+                      <div class="swiper-slide p-md-5 p-2">
+                        <div class="name">
+                          <div class="sub-title">
+                            <div class="text-wrapper">
+                              <span>{{event.date}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-11 offset-md-1">
+                              <div class="title">
+                                <div class="text-wrapper">
+                                  <span style="margin-top: 30px"
+                                    >{{event.title}}</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="overview">
+                          <div class="title">
+                            <div class="text-wrapper">
+                              <span>Description</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-11 offset-md-1">
+                              <div class="text-wrapper">
+                                <span>
+                                  <p class="description">
+                                    {{event.description}}
+                                  </p>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="purchase">
+                          <div class="year">
+                            {{ event.start_time|time:"H:i" }}
+                          </div>
+                          <a
+                            href="{{event.ticket_link}}"
+                            style="text-decoration: none"
+                            ><button class="purchase-btn">Acheter</button></a
+                          >
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <!-- pagination -->
+                    <div class="swiper-pagination"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 
+        - #UPCOMING
+      -->
+
+        <section class="upcoming" id="programme">
+          <div class="container">
+            <div class="flex-wrapper">
+              <div class="title-wrapper">
+                <p class="section-subtitle">Chercher par date</p>
+
+                <h2 class="h2 section-title">programme du mois</h2>
+              </div>
+
+              <ul class="filter-list">
+                <li>
+                  <button class="filter-btn actual-btn" data-filter-btn="all">
+                    Tout
+                  </button>
+                </li>
+                {% for concert_type in concert_types %}
+                <li>
+                  <button
+                    class="filter-btn"
+                    data-filter-btn="{{ concert_type.name }}"
+                  >
+                    {{ concert_type.name }}
+                  </button>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                const filterBtns =
+                  document.querySelectorAll("[data-filter-btn]");
+                const concertsList = document.querySelector(".movies-list");
+                const concertItems = concertsList.querySelectorAll("li");
+
+                filterBtns.forEach((button) => {
+                  button.addEventListener("click", () => {
+                    const filterValue = button.getAttribute("data-filter-btn");
+                    filterConcerts(filterValue);
+                  });
+                });
+
+                function filterConcerts(filterValue) {
+                  concertItems.forEach((concert) => {
+                    const concertType =
+                      concert.getAttribute("data-concert-type");
+
+                    if (filterValue === "all" || concertType === filterValue) {
+                      concert.style.animation = "fadeInOut 0.5s"; // Ajoutez cette ligne
+                      concert.style.display = "block";
+                    } else {
+                      concert.style.display = "none";
+                    }
+                  });
+                }
+              });
+            </script>
+            <style>
+              @keyframes fadeInOut {
+                0% {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+                50% {
+                  opacity: 0.5;
+                  transform: translateY(-5px);
+                }
+                100% {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+            </style>
+
+            <ul class="movies-list">
+              {% for event in concert %}
+              <li
+                class="concert-type-{{ event.concert_type.name }}"
+                data-concert-type="{{ event.concert_type.name }}"
+              >
+                <div class="movie-card">
+                  <a href="{% url 'concert_detail' concert_id=event.id %}">
+                    <figure class="card-banner">
+                      <img
+                        src="{{event.normal_image.url}}"
+                        alt="{{ event.title }} poster"
+                      />
+                    </figure>
+                  </a>
+
+                  <div class="title-wrapper">
+                    <a href="./movie-details.html">
+                      <h3 class="card-title">{{event.title}}</h3>
+                    </a>
+
+                    <time style="width: 115.9667px" datetime="{{ event.date }}"
+                      >{{ event.date|date }}</time
+                    >
+                  </div>
+
+                  <div class="card-meta">
+                    <div class="duration">
+                      <ion-icon name="time-outline"></ion-icon>
+
+                      <time datetime="{{ event.start_time }}"
+                        >{{ event.start_time|time:"H:i" }}</time
+                      >
+                      <time datetime="{{ concert.end_time }}"
+                        >{{ event.end_time|time:"H:i" }}</time
+                      >
+                    </div>
+
+                    <div class="rating">
+                      <ion-icon name="star"></ion-icon>
+
+                      <data>8.5</data>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </section>
+
+        <!-- 
+        - #CTA
+      -->
+
+        <section class="cta">
+          <div
+            class="container"
+            style="
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <div class="title-wrapper">
+              <h2 class="cta-title">Restez informé de toutes nos nouveautés</h2>
+            </div>
+
+            <form action="{% url 'subscribe' %}" method="post" class="cta-form">
+              {% csrf_token %}
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Enter your email"
+                class="email-field"
+              />
+
+              <button type="submit" class="cta-form-btn">Get started</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- 
+        - #SERVICE
+      -->
+
+        <section class="service">
+          <div class="container">
+            <div class="service-banner">
+              <figure class="blurred-glass">
+                <img
+                  style="max-width: 100%; height: auto; max-height: 600px"
+                  src="{% static 'images/Directeur_TM5.png' %}"
+                  alt="Banner Image"
+                />
+              </figure>
+
+              <a
+                href="https://fr.wikipedia.org/wiki/Th%C3%A9%C3%A2tre_national_Mohammed-V"
+                class="service-btn"
+                style="text-decoration: none"
+              >
+                <span>Lire la suite</span>
+
+                <ion-icon name="download-outline"></ion-icon>
+              </a>
+            </div>
+
+            <div class="service-content">
+              <p class="service-subtitle">Editorial</p>
+
+              <h2 class="h2 service-title">Le Théâtre Mohammed V</h2>
+
+              <p class="service-text" style="text-align: justify">
+                Le Royaume du Maroc a toujours été considéré comme étant une
+                terre d’accueil et de partage, et un véritable carrefour
+                historique qui a su inscrire sa grande civilisation dans
+                l’histoire des peuples du monde. Disposant d’une culture
+                ancestrale des plus riches, le Maroc continue à jouer un rôle
+                d’exception dans la favorisation des échanges entre les peuples,
+                et l’ouverture aux différentes cultures. Rabat ; ville des
+                lumières et capitale culturelle du Royaume confirme, cette
+                année, ce statut en célébrant ses identités islamiques et
+                africaines, à travers des manifestations culturelles grandioses,
+                et des ponts d’échanges avec les pays frères et amis.
+              </p>
+
+              <ul class="service-list">
+                <li>
+                  <div class="service-card">
+                    <div class="card-icon">
+                      <ion-icon name="person-outline"></ion-icon>
+                    </div>
+                    <div class="card-content">
+                      <h3 class="h3 card-title">Mohamed Benhssain</h3>
+
+                      <p class="card-text">
+                        Directeur du Théâtre national Mohammed V
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                <li>
+                  <div class="service-card">
+                    <div class="card-icon">
+                      <ion-icon name="book-outline"></ion-icon>
+                    </div>
+
+                    <div class="card-content">
+                      <h3 class="h3 card-title">Info Théâtre</h3>
+
+                      <p class="card-text" style="text-align: justify">
+                        Cultivant l'excellence culturelle et embrassant le passé
+                        et l'avenir
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 
+        - #TV SERIES
+      -->
+
+        <section class="tv-series" id="actualites">
+          <div class="container">
+            <p class="section-subtitle">Suivre</p>
+
+            <h2 class="h2 section-title">Actualités</h2>
+
+            <ul class="movies-list">
+              {% for actualite in Actualite %}
+              <li>
+                <div class="movie-card">
+                  <a
+                    href="{% url 'actualite_detail' actualite_id=actualite.id %}"
+                  >
+                    <figure class="card-banner">
+                      <img
+                        src="{{ actualite.image.url }}"
+                        alt="Moon Knight movie poster"
+                      />
+                    </figure>
+                  </a>
+
+                  <div class="title-wrapper">
+                    <a
+                      href="{% url 'actualite_detail' actualite_id=actualite.id %}"
+                    >
+                      <h3 class="card-title">{{actualite.title}}</h3>
+                    </a>
+                  </div>
+
+                  <div class="card-meta">
+                    <div class="badge badge-outline">New</div>
+
+                    <div class="duration">
+                      <ion-icon name="time-outline"></ion-icon>
+
+                      <time datetime="{{actualite.date}}"
+                        >{{actualite.date}}</time
+                      >
+                    </div>
+
+                    <div class="rating">
+                      <ion-icon name="star"></ion-icon>
+
+                      <data>8.6</data>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </section>
+
+        <!-- 
+        - #CTA les partenaires
+      -->
+        <section class="cta">
+          <div class="container">
+            <div class="title-wrapper">
+              <h2 class="cta-title">Nos Partenaires:</h2>
+            </div>
+            <ul
+              class="partenaire"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <li>
+                <img
+                  src="https://tm5.ma/wp-content/uploads/2022/05/logo_ministere_Culture-1.png"
+                  alt="Ministère de la culture"
+                  style="margin: 10px 0 0; height: 90px; width: auto"
+                />
+              </li>
+              <li>
+                <img
+                  src="https://tm5.ma/wp-content/themes/tm5/images/partenaire.png"
+                  alt="Nos partenaires"
+                />
+              </li>
+            </ul>
+            <style>
+              @media (max-width: 750px) {
+                .partenaire {
+                  display: flex;
+                  flex-direction: column;
+                }
+              }
+            </style>
+          </div>
+        </section>
+      </article>
+    </main>
+
+    <!-- 
+    - #GO TO TOP
+  -->
+
+    <a href="#top" class="go-top" data-go-top>
+      <ion-icon name="chevron-up"></ion-icon>
+    </a>
+
+    <!-- 
+    - ionicon link
+  -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+
+    <script src="{% static 'js/index.js' %}"></script>
+  </body>
+</html>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}" />
+
+<section
+  class="movie-detail"
+  style="background: url('{{ actualite.image.url }}') no-repeat;background-size: cover;position: relative;z-index: 1"
+>
+  <div
+    class="dark-overlay"
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.686);
+      z-index: -1;
+    "
+  ></div>
+  <div class="container">
+    <figure class="movie-detail-banner">
+      <img
+        src="{{ actualite.image.url }}"
+        alt="Free guy movie poster"
+        style="height: auto"
+      />
+    </figure>
+
+    <div class="movie-detail-content">
+      <p class="detail-subtitle">Actualite</p>
+
+      <h1 class="h1 detail-title">{{ actualite.title }}</h1>
+
+      <div class="meta-wrapper">
+        <div class="date-time">
+          <div>
+            <ion-icon name="calendar-outline"></ion-icon>
+
+            <time datetime="{{ actualite.date }}">{{ actualite.date }}</time>
+          </div>
+
+          <div>
+            <ion-icon name="time-outline"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <p class="storyline" style="font-size: larger; text-align: justify">
+        {{ actualite.description }}
+      </p>
+
+      <a href="{% url 'index' %}#actualites" class="download-btn">
+        <span>Plus d'actualité</span>
+
+        <ion-icon name="download-outline"></ion-icon>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script src="{% static 'js/index.js' %}"></script>
+{% endblock %}
