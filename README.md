@@ -1,4 +1,5 @@
 # Theater Website
+![Theater Website Hero-Section](Theater-Website Hero-Section.png)
 
 ## Description
 Welcome to the Theater Website project! This project aims to create a dynamic website for a theater, allowing users to explore upcoming shows, purchase tickets, and learn more about the theater's offerings.
